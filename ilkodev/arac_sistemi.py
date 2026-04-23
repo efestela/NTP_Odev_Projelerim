@@ -90,7 +90,7 @@ if __name__ == "__main__":
                 print("\n Kirada olan bir aracınız bulunmuyor!")
 
         elif secim == "4":
-            print("Sistemden çıkılıyor... Essek Saklaban!")
+            print("Sistemden çıkılıyor... İyi Günler!")
             break
         else:
             print("Geçersiz seçim, lütfen tekrar deneyin.")
