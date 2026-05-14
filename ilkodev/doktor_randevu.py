@@ -1,9 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
-from tkcalendar import DateEntry # Takvim bileşeni
+from tkcalendar import DateEntry
 from datetime import datetime
-
-# --- VERİ MODELLERİ ---
 
 class Hasta:
     def __init__(self, hasta_id, ad, tc, telefon):
@@ -21,19 +19,15 @@ class Doktor:
         self.doktor_id = doktor_id
         self.ad = ad
         self.uzmanlik = uzmanlik
-        # Randevuları artık tarih bazlı tutmalıyız: { "tarih": {"saat": True/False} }
         self.randevu_takvimi = {}
 
     def uygunluk_kontrol(self, tarih, saat):
-        # Eğer o tarihe hiç bakılmadıysa, saatleri oluştur
         if tarih not in self.randevu_takvimi:
             self.randevu_takvimi[tarih] = {
                 "09:00": True, "10:00": True, "11:00": True, 
                 "13:00": True, "14:00": True, "15:00": True
             }
         return self.randevu_takvimi[tarih].get(saat, False)
-
-# --- ARAYÜZ SINIFI ---
 
 class RandevuUygulamasi:
     def __init__(self, root):
@@ -42,7 +36,6 @@ class RandevuUygulamasi:
         self.root.geometry("600x750")
         self.root.configure(bg="#f8f9fa")
 
-        # Örnek Veriler
         self.doktorlar = {
             "1": Doktor(1, "Oğulcan Akın", "Kardiyoloji"),
             "2": Doktor(2, "Yusuf Udum", "Göz Hastalıkları"),
@@ -55,30 +48,25 @@ class RandevuUygulamasi:
     def arayuz_tasarla(self):
         tk.Label(self.root, text="DOKTOR RANDEVU SİSTEMİ", font=("Segoe UI", 18, "bold"), bg="#f8f9fa", fg="#343a40").pack(pady=20)
 
-        # --- RANDEVU FORMU ---
         frame_form = tk.LabelFrame(self.root, text="Randevu Bilgileri", padx=15, pady=15, bg="white", font=("Segoe UI", 10, "bold"))
         frame_form.pack(fill="x", padx=25, pady=10)
 
-        # Doktor Seçimi
         tk.Label(frame_form, text="Doktor:", bg="white").grid(row=0, column=0, sticky="w", pady=8)
         self.combo_doktor = ttk.Combobox(frame_form, values=[f"{d.ad} ({d.uzmanlik})" for d in self.doktorlar.values()], state="readonly", width=30)
         self.combo_doktor.grid(row=0, column=1, pady=8, padx=10)
         self.combo_doktor.bind("<<ComboboxSelected>>", self.formu_guncelle)
 
-        # Tarih Seçimi (tkcalendar)
         tk.Label(frame_form, text="Tarih:", bg="white").grid(row=1, column=0, sticky="w", pady=8)
         self.cal = DateEntry(frame_form, width=28, background='darkblue', foreground='white', borderwidth=2, date_pattern='dd/mm/yyyy', mindate=datetime.now())
         self.cal.grid(row=1, column=1, pady=8, padx=10)
         self.cal.bind("<<DateEntrySelected>>", self.formu_guncelle)
 
-        # Saat Seçimi
         tk.Label(frame_form, text="Saat:", bg="white").grid(row=2, column=0, sticky="w", pady=8)
         self.combo_saat = ttk.Combobox(frame_form, state="readonly", width=30)
         self.combo_saat.grid(row=2, column=1, pady=8, padx=10)
 
         tk.Button(frame_form, text="Randevuyu Kaydet", command=self.randevu_kaydet_cmd, bg="#007bff", fg="white", font=("Segoe UI", 10, "bold")).grid(row=3, column=0, columnspan=2, pady=15, sticky="we")
 
-        # --- RANDEVU LİSTESİ ---
         frame_liste = tk.LabelFrame(self.root, text="Aktif Randevularınız", padx=15, pady=15, bg="white", font=("Segoe UI", 10, "bold"))
         frame_liste.pack(fill="both", expand=True, padx=25, pady=10)
 
@@ -99,7 +87,6 @@ class RandevuUygulamasi:
         dr_ad = dr_metin.split(" (")[0]
         for dr in self.doktorlar.values():
             if dr.ad == dr_ad:
-                # Doktorun o tarih için saatlerini kontrol et
                 if tarih not in dr.randevu_takvimi:
                     dr.randevu_takvimi[tarih] = {"09:00": True, "10:00": True, "11:00": True, "13:00": True, "14:00": True, "15:00": True}
                 
