@@ -2,8 +2,6 @@ import tkinter as tk
 from tkinter import messagebox
 from datetime import datetime
 
-# --- MANTIKSAL SINIFLAR (VERİ MODELLERİ) ---
-
 class Arac:
     def __init__(self, arac_id, marka, model, kilometre):
         self.arac_id = arac_id
@@ -25,15 +23,12 @@ class Kullanici:
         self.ehliyet_no = ehliyet_no
         self.gecmis = []
 
-# --- ARAYÜZ SINIFI ---
-
 class AracKiralamaUygulamasi:
     def __init__(self, root):
         self.root = root
         self.root.title("Araç Paylaşım Sistemi")
         self.root.geometry("500x600")
 
-        # Örnek Veriler
         self.araclar = {
             1: Arac(1, "Tesla", "Model 3", 10000),
             2: Arac(2, "BMW", "i4", 5000),
@@ -45,10 +40,9 @@ class AracKiralamaUygulamasi:
         self.arayuz_olustur()
 
     def arayuz_olustur(self):
-        # Üst Başlık
+
         tk.Label(self.root, text="--- ARAÇ PAYLAŞIM SİSTEMİ ---", font=("Arial", 14, "bold")).pack(pady=10)
 
-        # Araç Listesi Alanı
         frame_liste = tk.LabelFrame(self.root, text="Mevcut Araçlar", padx=10, pady=10)
         frame_liste.pack(fill="both", padx=10, pady=5)
 
@@ -56,7 +50,6 @@ class AracKiralamaUygulamasi:
         self.text_liste.pack()
         self.liste_guncelle()
 
-        # İşlem Alanı
         frame_islem = tk.LabelFrame(self.root, text="Kiralama İşlemleri", padx=10, pady=10)
         frame_islem.pack(fill="x", padx=10, pady=5)
 
@@ -66,7 +59,6 @@ class AracKiralamaUygulamasi:
 
         tk.Button(frame_islem, text="Aracı Kirala", command=self.kirala_cmd, bg="green", fg="white").grid(row=0, column=2, padx=5)
 
-        # Teslim Etme Alanı
         frame_teslim = tk.LabelFrame(self.root, text="Teslim İşlemleri", padx=10, pady=10)
         frame_teslim.pack(fill="x", padx=10, pady=5)
 
